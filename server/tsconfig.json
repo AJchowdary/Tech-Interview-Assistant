@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2016",                  /* Modern enough JS target */
+    "module": "CommonJS",                /* For Node.js compatibility */
+    "esModuleInterop": true,             /* Allows 'import express from "express"' */
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,                      /* Enables all strict type checks */
+    "skipLibCheck": true,                /* Speed up compilation by skipping type checks on .d.ts files */
+
+    /* Root folders */
+    "rootDir": "./src",                  /* Source folder */
+    "outDir": "./dist",                  /* Output folder for compiled JS */
+
+    /* Source maps (optional, good for debugging) */
+    "sourceMap": true,
+
+    /* Module resolution */
+    "moduleResolution": "node",
+
+    /* Type checking */
+    "noImplicitAny": true,
+    "strictNullChecks": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
