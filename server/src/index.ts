@@ -9,14 +9,17 @@ const cors = require("cors");
 const app = express();
 app.use(express.json());
 
+// Allow CORS for localhost (dev) and Vercel (prod)
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "http://localhost:5174"
+      "http://localhost:5174",
+      "https://tech-interview-assistant.vercel.app"
     ],
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
+    credentials: true, // Only needed if you use cookies/auth headers
   })
 );
 
@@ -160,6 +163,7 @@ const PORT = 4010;
 app.listen(PORT, () => {
   console.log(`✅ Backend running on port ${PORT}`);
 });
+
 
 
 
