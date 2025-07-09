@@ -49,6 +49,12 @@ function App() {
   const [score, setScore] = useState<number | null>(null);
   const [evaluation, setEvaluation] = useState<EvaluationItem[]>([]);
 
+  // Use env variable in production, fallback to relative path for dev
+  const API_BASE =
+    import.meta.env.VITE_BACKEND_URL && import.meta.env.VITE_BACKEND_URL !== ""
+      ? import.meta.env.VITE_BACKEND_URL
+      : "";
+
   const getInterviewQuestions = async () => {
     if (!role) {
       alert("Please select a job role.");
@@ -59,7 +65,7 @@ function App() {
     setError(null);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/interview-questions`, {
+      const res = await fetch(`${API_BASE}/api/interview-questions`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ role, difficulty }),
@@ -103,7 +109,7 @@ function App() {
     setError(null);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/evaluate`, {
+      const res = await fetch(`${API_BASE}/api/evaluate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ questions, answers }),
@@ -425,8 +431,6 @@ function App() {
 }
 
 export default App;
-
-
 
 
 

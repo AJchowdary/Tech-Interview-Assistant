@@ -1,12 +1,20 @@
+// Load environment variables from .env
+require('dotenv').config();
+console.log("GROQ_API_KEY:", process.env.GROQ_API_KEY); // Debug: Should print your key (or at least part of it)
+
 import express, { Request, Response } from "express";
 import fetch from "node-fetch"; // npm install node-fetch@2
 const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174"
+    ],
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
@@ -48,11 +56,13 @@ Each question should be an object with:
 Return ONLY a valid JSON array of 15 such objects.
 `;
 
+  // Debug: Print API key just before making the request
+  console.log("Using GROQ_API_KEY:", process.env.GROQ_API_KEY);
+
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
     method: "POST",
     headers: {
-     "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
-, // Your API key
+      "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -67,6 +77,8 @@ Return ONLY a valid JSON array of 15 such objects.
   });
 
   if (!response.ok) {
+    // Debug: Print Groq API response status and text
+    console.error("Groq API response:", response.status, await response.text());
     throw new Error(`Groq API error: ${response.statusText}`);
   }
 
@@ -103,7 +115,7 @@ app.post(
       res.json({ questions });
     } catch (err: any) {
       console.error(err);
-      res.status(500).json({ error: "Failed to generate questions." });
+      res.status(500).json({ error: err.message || "Failed to generate questions." });
     }
   }
 );
@@ -148,6 +160,7 @@ const PORT = 4010;
 app.listen(PORT, () => {
   console.log(`✅ Backend running on port ${PORT}`);
 });
+
 
 
 
